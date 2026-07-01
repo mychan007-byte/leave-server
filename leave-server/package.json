@@ -1,0 +1,17 @@
+{
+  "name": "dhl-leave-server",
+  "version": "1.0.0",
+  "description": "Leave system for Don Hua Lo Police Station (central server)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "import": "node import_roster.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.13",
+    "xlsx": "^0.18.5"
+  }
+}
