@@ -230,6 +230,14 @@ app.delete("/api/admin/users/:id", auth, adminOnly, (req, res) => {
   db.save(); res.json({ ok: true });
 });
 
+// ผู้ดูแลระบบยกเลิก/ลบใบลา
+app.delete("/api/admin/leaves/:id", auth, adminOnly, (req, res) => {
+  const before = store.leaves.length;
+  store.leaves = store.leaves.filter(l => l.id !== req.params.id);
+  if (store.leaves.length === before) return res.status(404).json({ error: "ไม่พบใบลา" });
+  db.save(); res.json({ ok: true });
+});
+
 // routing (สายการอนุมัติต่อกลุ่มงาน)
 app.get("/api/admin/routing", auth, adminOnly, (req, res) =>
   res.json({ routing: store.routing, commander: store.commander,

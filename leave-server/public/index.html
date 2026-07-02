@@ -258,7 +258,8 @@ async function openDetail(id){
         <button class="btn red" onclick="act('${l.id}','reject')">ไม่อนุมัติ</button>
         <button class="btn gold" onclick="window.open('/print/leave/${l.id}','_blank')">🖨️ พิมพ์ใบลา</button>
         <button class="btn ghost" onclick="closeModal()">ปิด</button></div>`
-     :`<div style="margin-top:16px;display:flex;gap:10px">
+     :`<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        ${ME.admin?`<button class="btn red" onclick="cancelLeave('${l.id}')">ยกเลิก/ลบใบลานี้</button>`:""}
         <button class="btn gold" onclick="window.open('/print/leave/${l.id}','_blank')">🖨️ พิมพ์ใบลา</button>
         <button class="btn ghost" onclick="closeModal()">ปิด</button></div>`}`;
   $("#modalBg").classList.add("show");
@@ -267,6 +268,12 @@ function closeModal(){$("#modalBg").classList.remove("show");}
 $("#modalBg").addEventListener("click",e=>{if(e.target.id==="modalBg")closeModal();});
 async function act(id,kind){
   try{await api("/leaves/"+id+"/action",{method:"POST",body:JSON.stringify({kind,note:$("#actNote")?$("#actNote").value:""})});
+    closeModal();render();
+  }catch(e){alert(e.message);}
+}
+async function cancelLeave(id){
+  if(!confirm("ยืนยันยกเลิก/ลบใบลานี้? เมื่อลบแล้วจะกู้คืนไม่ได้"))return;
+  try{await api("/admin/leaves/"+id,{method:"DELETE"});
     closeModal();render();
   }catch(e){alert(e.message);}
 }
